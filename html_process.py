@@ -44,7 +44,7 @@ class html_handler(object):
         if self.pre_set:
             output = self.pre_set.replace(self.insertion_marker, self.content)
         else:
-           output = self.content
+           output = "<html><body>" + self.content + "</body></html>"
 
         return output
 
