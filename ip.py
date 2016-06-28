@@ -13,6 +13,10 @@ __maintainer__ = "Thomas Jongerius"
 __email__ = "thomasjongerius@yaworks.nl"
 __status__ = "Development"
 
+import sys
+import os
+sys.path.append(os.path.dirname(__file__))
+sys.path.append('/data/tools-bin/web_process/NetAnalyzer/IPFinder')
 import logging
 import html_process
 from NetAnalyzer.IPFinder import IPFinder
