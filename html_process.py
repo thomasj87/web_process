@@ -3,8 +3,6 @@
 library to generate HTML page
 """
 
-import logging
-
 __author__ = "Thomas Jongerius"
 __copyright__ = "Copyright 2016, Thomas Jongerius"
 __credits__ = ["Thomas Jongerius"]
@@ -21,21 +19,31 @@ class html_handler(object):
     If none is give, generate input on blank page.
     """
 
-    def __init__(self, pre_set=None, start_marker=None, end_marker=None, content=None):
+    def __init__(self, pre_set=None, insertion_marker=None, content=None):
 
-        if pre_set:
-            self.pre_set = None
+        self.insertion_marker = insertion_marker
+
+        if pre_set and self.insertion_marker:
+            try:
+                with open(pre_set) as html_file:
+                    self.pre_set = html_file.read()
+            except:
+                self.pre_set = None
         else:
             self.pre_set = None
-        self.start_marker = start_marker
-        self.end_marker = end_marker
+
         self.content = content
 
     def generate_page(self):
         """
         Function to generate HTML page.
         """
-        output = self.content
+        output = str()
+
+        if self.pre_set:
+            output = self.pre_set.replace(self.insertion_marker, self.content)
+        else:
+           output = self.content
 
         return output
 
