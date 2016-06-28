@@ -1,0 +1,3 @@
+[submodule "NetAnalyzer"]
+	path = NetAnalyzer
+	url = git@github.com:thomasj87/NetAnalyzer.git
