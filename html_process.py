@@ -29,7 +29,6 @@ class html_handler(object):
                     self.pre_set = html_file.read()
             except:
                 self.pre_set = None
-                print 'cannot read'
         else:
             self.pre_set = None
 

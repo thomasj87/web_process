@@ -39,19 +39,23 @@ def application(environ, start_response):
     d = parse_qs(request_body)
 
     logging_data = d.get('logging_field', [''])[0] #Return logging data
+    logging_data = escape(logging_data)
+    ips = IPFinder.getip(logging_data)
 
     # Always escape user input to avoid script injection
-    if logging_data:
-        logging_data = escape(logging_data)
-
-        ips = IPFinder.getip(logging_data)
+    if __name__ != '__main__':
 
         x = html_process.html_handler(pre_set='./ips_return.html',
                                       insertion_marker='<!--PROCESS-->',
                                       content="\n".join(ips))
     else:
-        x = html_process.html_handler(pre_set='./ips_return.html',
-                                      insertion_marker='<!--PROCESS-->')
+        if logging_data:
+            x = html_process.html_handler(pre_set='./ips_return.html',
+                                          insertion_marker='<!--PROCESS-->',
+                                          content="\n".join(ips))
+        else:
+            x = html_process.html_handler(pre_set='./ips_return.html',
+                                        insertion_marker='<!--PROCESS-->')
 
     response_body = x.generate_page()
 
