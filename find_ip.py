@@ -13,23 +13,37 @@ __maintainer__ = "Thomas Jongerius"
 __email__ = "thomasjongerius@yaworks.nl"
 __status__ = "Development"
 
-import sys
-import os
-sys.path.append(os.path.dirname(__file__))
-sys.path.append('/data/tools-bin/web_process/NetAnalyzer/IPFinder')
 import logging
-import html_process
-from NetAnalyzer.IPFinder import IPFinder
-
-from cgi import parse_qs, escape
 
 def application(environ, start_response):
+    '''
+    WSGI application for filtering and outputting IP-addresses.
+    '''
+
+    # Import system modules
+    import os
+    import sys
+
+    # Add required system paths for WSGI rights.
+    base_directory = os.path.dirname(__file__)
+    sys.path.append(base_directory)
+    sys.path.append('/data/tools-bin/web_process/NetAnalyzer/IPFinder')
+
+    # Import required modules for HTML processing
+    import html_process
+    from cgi import parse_qs, escape
+
+    # Import application required modules
+    from NetAnalyzer.IPFinder import IPFinder
 
     # the environment variable CONTENT_LENGTH may be empty or missing
     try:
         request_body_size = int(environ.get('CONTENT_LENGTH', 0))
     except (ValueError):
         request_body_size = 0
+
+    # HTML template file template
+    html_file = base_directory + '/' + 'find_ip.html'
 
     # When the method is POST the variable will be sent
     # in the HTTP request body which is passed by the WSGI server
@@ -38,23 +52,23 @@ def application(environ, start_response):
     d = parse_qs(request_body)
 
     logging_data = d.get('logging_field', [''])[0] #Return logging data
-    logging_data = escape(logging_data)
-    ips = IPFinder.getip(logging_data)
+    count = d.get('count', [''])[0] #Return logging data
+    print count
 
     # Always escape user input to avoid script injection
-    if __name__ != '__main__':
+    logging_data = escape(logging_data)
 
-        x = html_process.html_handler(pre_set='ips_return.html',
-                                      insertion_marker='<!--PROCESS-->',
-                                      content="\n".join(ips))
+    # Launch application against input
+    if logging_data:
+        ips = IPFinder.getip(logging_data)
     else:
-        if logging_data:
-            x = html_process.html_handler(pre_set='./ips_return.html',
-                                          insertion_marker='<!--PROCESS-->',
-                                          content="\n".join(ips))
-        else:
-            x = html_process.html_handler(pre_set='./ips_return.html',
-                                        insertion_marker='<!--PROCESS-->')
+        ips = ['No input data!']
+
+    html_output = html_process.html_handler.lst_to_line_by_line(ips)
+
+    x = html_process.html_handler(pre_set=html_file,
+                                  insertion_marker='<!--PYTHON_PROCESS_OUTPUT-->',
+                                  content=html_output)
 
     response_body = x.generate_page()
 

@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="A layout example that shows off a responsive product landing page.">
+
+    <title>Tool page</title>
+    
+    <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/pure-min.css">  
+    <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/grids-responsive-min.css">
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
+    <link rel="stylesheet" href="http://tools.jongeriusnet.nl/css/layouts/marketing.css">
+
+</head>
+<body>
+
+    <div class="header">
+        <div class="home-menu pure-menu pure-menu-horizontal pure-menu-fixed">
+            <a class="pure-menu-heading" href="">Tool page</a>
+
+            <ul class="pure-menu-list">
+                <li class="pure-menu-item pure-menu-selected"><a href="index.html" class="pure-menu-link">Home</a></li>
+                <li class="pure-menu-item pure-menu-selected"><a href="tools.html" class="pure-menu-link">Tools</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="content">
+        <h1 class="content-head is-center">Analyzed by Python</h1>
+        <h2 class="content-head is-center">Return IPs</h2>
+        This is an ideal tool for analyzing large output and search for IP addresses.
+
+        <form class="pure-form" action="/tools/ip.py" method="post">
+
+            <label for="option-one" class="pure-checkbox"> Count IP's
+                <input name="count" type="checkbox" value="">
+            </label>
+
+            <fieldset class="pure-group">
+                <textarea name="logging_field" class="pure-input-1" placeholder="Logging data" value="1.2.3.4/23, 123.456.789.123/128"></textarea>
+            </fieldset>
+
+            <button type="submit" class="pure-button pure-input-1 pure-button-primary">Submit</button>
+        </form>
+
+
+        <h3 class="content-head is-left">Output</h3>
+
+        <!--PYTHON_PROCESS_OUTPUT-->
+
+    </div>
+
+    <div class="footer l-box bottom is-center">
+        Made by Thomas Jongerius at tools.jongeriusnet.nl
+    </div>
+
+
+</body>
+</html>

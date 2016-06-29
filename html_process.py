@@ -43,6 +43,7 @@ class html_handler(object):
         """
         Function to generate HTML page.
         """
+
         output = str()
 
         if self.pre_set:
@@ -55,4 +56,17 @@ class html_handler(object):
 
         return output
 
+    @staticmethod
+    def lst_to_line_by_line(input_list):
+        '''
+        Convert list to line by line with break seperator
+        '''
 
+        output = '<p>'
+
+        for i in input_list:
+            output = output + i + '<br>'
+
+        output = output + '</p>'
+
+        return output
