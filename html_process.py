@@ -3,6 +3,8 @@
 library to generate HTML page
 """
 
+import os
+
 __author__ = "Thomas Jongerius"
 __copyright__ = "Copyright 2016, Thomas Jongerius"
 __credits__ = ["Thomas Jongerius"]
@@ -28,6 +30,8 @@ class html_handler(object):
                 with open(pre_set) as html_file:
                     self.pre_set = html_file.read()
             except:
+                print os.path.dirname(os.path.realpath(__file__))
+                print pre_set
                 self.pre_set = None
         else:
             self.pre_set = None
