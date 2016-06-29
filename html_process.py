@@ -29,7 +29,7 @@ class html_handler(object):
             try:
                 with open(pre_set) as html_file:
                     self.pre_set = html_file.read()
-            except as e:
+            except BaseException as e:
                 print os.path.dirname(os.path.realpath(__file__))
                 print pre_set
                 print e
