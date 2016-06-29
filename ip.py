@@ -17,6 +17,7 @@ import sys
 import os
 sys.path.append(os.path.dirname(__file__))
 sys.path.append('/data/tools-bin/web_process/NetAnalyzer/IPFinder')
+sys.path.append('/data/tools-bin/web_process')
 import logging
 import html_process
 from NetAnalyzer.IPFinder import IPFinder
@@ -37,16 +38,20 @@ def application(environ, start_response):
     request_body = environ['wsgi.input'].read(request_body_size)
     d = parse_qs(request_body)
 
-    logging_data = d.get('logging_field', [''])[0] # Returns the first age value.
+    logging_data = d.get('logging_field', [''])[0] #Return logging data
 
     # Always escape user input to avoid script injection
-    logging_data = escape(logging_data)
+    if logging_data:
+        logging_data = escape(logging_data)
 
-    ips = IPFinder.getip(logging_data)
+        ips = IPFinder.getip(logging_data)
 
-    x = html_process.html_handler(pre_set='./ips_return.html',
-                                  insertion_marker='<!--PROCESS-->',
-                                  content="\n".join(ips))
+        x = html_process.html_handler(pre_set='./ips_return.html',
+                                      insertion_marker='<!--PROCESS-->',
+                                      content="\n".join(ips))
+    else:
+        x = html_process.html_handler(pre_set='./ips_return.html',
+                                      insertion_marker='<!--PROCESS-->')
 
     response_body = x.generate_page()
 

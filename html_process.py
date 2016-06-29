@@ -42,7 +42,10 @@ class html_handler(object):
         output = str()
 
         if self.pre_set:
-            output = self.pre_set.replace(self.insertion_marker, self.content)
+            if self.content:
+                output = self.pre_set.replace(self.insertion_marker, self.content)
+            else:
+                output = self.pre_set
         else:
            output = "<html><body>" + self.content + "</body></html>"
 
