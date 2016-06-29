@@ -44,7 +44,7 @@ def application(environ, start_response):
     # Always escape user input to avoid script injection
     if __name__ != '__main__':
 
-        x = html_process.html_handler(pre_set='/data/tools-bin/web_process/ips_return.html',
+        x = html_process.html_handler(pre_set='ips_return.html',
                                       insertion_marker='<!--PROCESS-->',
                                       content="\n".join(ips))
     else:
