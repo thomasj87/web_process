@@ -52,25 +52,35 @@ def application(environ, start_response):
     d = parse_qs(request_body)
 
     logging_data = d.get('logging_field', [''])[0] #Return logging data
-    count = d.get('count', [''])[0] #Return logging data
-    print count
+    options = d.get('options', []) # Returns a list of options.
 
     # Always escape user input to avoid script injection
     logging_data = escape(logging_data)
+    options = [escape(option) for option in options]
 
     # Launch application against input
     if logging_data:
         ips = IPFinder.getip(logging_data)
+        if len(ips) < 1:
+            ips = ['No IPs found!']
     else:
         ips = ['No input data!']
 
     html_output = html_process.html_handler.lst_to_line_by_line(ips)
 
+    if options:
+        html_output = html_output + '<br><h3>Options</h3>'
+        for option in options:
+            html_output = html_output + '<br>' + option
+
     x = html_process.html_handler(pre_set=html_file,
                                   insertion_marker='<!--PYTHON_PROCESS_OUTPUT-->',
                                   content=html_output)
 
-    response_body = x.generate_page()
+    # Fill defaults and generate page
+    response_body = x.generate_page() % { # Fill the above html template in
+        'checked-countips': ('', 'checked')['count_ip' in options],
+        'checked-include_mask': ('', 'checked')['include_mask' in options]}
 
     status = '200 OK'
 
@@ -83,6 +93,7 @@ def application(environ, start_response):
     return [response_body]
 
 def main():
+
     logging.debug("Started")
 
     from wsgiref.simple_server import make_server
@@ -90,8 +101,6 @@ def main():
     httpd.serve_forever()
 
     logging.debug("Done")
-
-    print x.generate_page()
 
 if __name__ == '__main__':
     main()
