@@ -69,7 +69,7 @@ def application(environ, start_response):
     html_output = html_process.html_handler.lst_to_line_by_line(ips)
 
     if options:
-        html_output = html_output + '<br><h3>Options</h3>'
+        html_output = html_output + '<br><h3>Options provided: (debugging)</h3>'
         for option in options:
             html_output = html_output + '<br>' + option
 
